@@ -8,14 +8,13 @@ gem 'rails', '3.2.9'
 gem 'pg'
 
 group :development do
-	gem 'rspec', '2.0.0.beta.18'
-	gem 'webrat', '0.7.1'
+	gem 'rspec-rails'
+	gem 'win32console'
 end
 
 group :test do
-	gem 'rspec', '2.0.0.beta.18'
-	gem 'webrat', '0.7.1'
-end
+	gem 'rspec-rails'
+	end
 
 
 
