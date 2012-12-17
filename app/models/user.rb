@@ -34,7 +34,7 @@ email_format = /[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
  end
 
  def encrypt(string)
- 	secure_hash("#{self.salt}--#{string}")
+ 	secure_hash("#{salt}--#{string}")
  end
 
  def secure_hash(string)

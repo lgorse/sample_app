@@ -6,6 +6,7 @@ gem 'rails', '3.2.9'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
+gem 'gravatar_image_tag'
 
 group :development do
 	gem 'rspec-rails'
@@ -14,6 +15,7 @@ end
 
 group :test do
 	gem 'rspec-rails'
+	gem 'factory_girl_rails'
 	end
 
 
