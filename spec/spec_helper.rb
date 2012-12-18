@@ -37,4 +37,8 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.include Capybara::DSL
+
+  def test_sign_in(user)
+    controller.sign_in(user)
+  end
 end

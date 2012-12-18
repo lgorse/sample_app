@@ -1,8 +1,15 @@
 <%= link_to logo, root_path %>
-		<nav class="round">
-			<ul class = "round">
-				<li class="horizontal first"><%= link_to "Home", root_path %></li>
-				<li class="horizontal"><%= link_to "Help", help_path %></li>
-				<li class="horizontal"><%= link_to "Sign In", signin_path %></li>
-			</ul>	
-		</nav>
+<nav class="round">
+	<ul class = "round">
+		<li class="horizontal first"><%= link_to "Home", root_path %></li>
+		<% if signed_in? %>
+		<li class="horizontal"><%= link_to "Profile", user_path(current_user) %></li>
+		<% end %>
+		<li class="horizontal"><%= link_to "Help", help_path %></li>
+		<% if signed_in? %>
+		<li class="horizontal"><%= link_to "Sign out", signout_path %></li>
+		<% else %>
+		<li class="horizontal"><%= link_to "Sign In", signin_path %></li>
+		<% end %>
+	</ul>	
+</nav>

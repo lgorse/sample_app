@@ -8,7 +8,11 @@
 		<%= render 'layouts/header' %>
 	</header>
 	<div class="container">
+		<% if signed_in? %>
+		<h1><%= current_user.name %></h1>
+		<% else %>
 		<h1><%= base_title %></h1>
+		<% end %>
 		<section class = "round">
 			<% flash.each do |key, value| %>
 			<div class = "flash <%= key %>"><%= value %></div>
