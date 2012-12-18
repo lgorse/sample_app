@@ -20,6 +20,18 @@ describe UsersController do
 		end
 	end
 
+	describe "GET 'new'" do
+		before(:each) do
+			@user = FactoryGirl.create(:user)
+		end
+
+		it "should log the user out" do
+			get :new, :id => @user
+			controller.should_not be_signed_in
+		end
+
+	end
+
 	describe "POST 'create'" do
 
 		describe "failure" do
@@ -72,8 +84,73 @@ describe UsersController do
 		end
 	end
 
-end
+	describe "GET 'edit'" do
 
+		before(:each) do
+			@user = FactoryGirl.create(:user)
+		end
+
+		it "should be successful" do
+			get :edit, :id => @user
+			response.should be_success
+		end
+
+		it "should have the right title" do
+			get :edit, :id => @user
+			response.body.should have_selector('h1', :text => 'Edit user')
+		end
+
+		it "should have a link to change the Gravatar" do
+			get :edit, :id => @user
+			response.body.should have_link('a', :href => 'http://gravatar.com/emails',
+													:text => 'Change')
+		end
+	end
+
+	describe "PUT 'update'"  do
+
+		before(:each) do
+			@user = FactoryGirl.create(:user)
+		end
+
+		describe "failure" do
+
+			before(:each) do
+				@attr = {:name =>"", :email=>"", :password=>"", :password_confirmation =>""}
+			end
+
+			it "should render edit page" do
+				put :update, :id => @user, :user => @attr
+				response.body.should render_template('edit')
+			end
+
+			it "should have the right title" do
+				put :update, :id => @user, :user => @attr
+				response.body.should have_selector('h1', :text => 'Edit user')
+			end
+		end
+
+		describe "success" do
+			before(:each) do
+				@attr = {:name =>"New Name", :email=>"user@super.example", :password=>"barbaz", :password_confirmation =>"barbaz"}
+			end
+
+			it "should change the user's attributes" do
+				put :update, :id => @user, :user => @attr
+				user = assigns(:user)
+				@user.reload
+				user.name.should == @user.name
+				user.email.should == @user.email
+			end
+
+			it "should have a flash message" do
+				put :update, :id => @user, :user => @attr
+				flash[:success].should =~ /updated/i
+			end
+		end
+
+	end
+end
 =begin
 	it "should have the right title" do
 		get :show, :id => @user

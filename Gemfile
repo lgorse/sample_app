@@ -11,6 +11,7 @@ gem 'gravatar_image_tag'
 group :development do
 	gem 'rspec-rails'
 	gem 'win32console'
+	gem 'autotest'
 end
 
 group :test do

@@ -6,6 +6,7 @@ class UsersController < ApplicationController
 	end
 
 	def new
+		sign_out
 		@title = "Sign up"
 		@user = User.new
 	end
@@ -16,10 +17,25 @@ class UsersController < ApplicationController
 			flash[:success] = "Welcome to the Sample App!"
 			sign_in @user
 			redirect_to user_path(@user)
-			#:flash => { :success => "Welcome to the Sample App"}
 		else
-			#flash{:success => "Welcome to the Sample App"}
 			render 'new'
 		end
 	end
+
+	def edit
+		@title = 'Edit user'
+		@user = User.find(params[:id])
+	end
+
+	def update
+		@user = User.find(params[:id])
+		if @user.update_attributes(params[:user])
+			flash[:success] = "User information updated"
+			redirect_to @user
+		else
+			@title = 'Edit user'
+			render 'edit'
+		end
+	end
+
 end
