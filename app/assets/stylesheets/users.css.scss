@@ -11,6 +11,32 @@
 	font-weight: bold;
 }
 
+.field_with_errors label {
+	color: white;
+	background-color: #FF6666;
+	text-align: center;
+	//width: 75px;
+}
+
+#error_explanation{
+	width: 450px;
+	border: 2px solid red;
+	margin-bottom: 20px;
+	padding-bottom: 0px;
+}
+
+#error_explanation h3{
+	color: white;
+	background-color: #FF6666;
+	margin-top: 0px;
+	padding: 2px;
+}
+
+
 .field input{
 	margin-bottom: 15px;
+}
+
+.action{
+	margin-left: 280px;
 }

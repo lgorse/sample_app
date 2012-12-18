@@ -112,13 +112,22 @@ td.main{
 }
 
 td.sidebar{
-	width: 30%;
+	width: 40%;
 	padding: 1em;
-	vertical-align: top;
+	vertical-align: center;
 	background: #ffc;
 }
 
 .profile img.gravatar{
 	border: 1px solid  #999;
 	margin-bottom: -15px;
+}
+
+.flash {
+	&.success{
+	background: #E6EFC2;
+	border: 2px solid #C6D880;
+	width: 400px;
+	text-align: center;
+}
 }
