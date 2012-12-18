@@ -20,8 +20,14 @@ email_format = /[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
  class << self
  	def authenticate(email, submitted_password)
  		user = find_by_email(email)
- 		return nil if user.nil?
- 		return user if user.has_password?(submitted_password)
+ 		(user && user.has_password?(submitted_password)) ? user : nil
+
+ 	end
+
+ 	def authenticate_with_salt(id, cookie_salt)
+ 		user = find_by_id(id)
+ 		(user && user.salt == cookie_salt) ? user : nil
+
  	end
 
  end

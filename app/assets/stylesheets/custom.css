@@ -14,7 +14,7 @@ header img{
 }
 
 body{
-background: #CCFFFF;
+	background: #CCFFFF;
 }
 
 .container{
@@ -70,7 +70,7 @@ a:visited{
 a:hover{
 	color: #990066;
 	text-decoration: underline;
-	}
+}
 
 a.signup_button{
 	margin-left: auto;
@@ -123,13 +123,18 @@ td.sidebar{
 	margin-bottom: -15px;
 }
 
-.flash {
-	&.success{
-	background: #E6EFC2;
-	border: 2px solid #C6D880;
-	width: 400px;
-	text-align: center;
-}
+.flash.success {
+		background: #E6EFC2;
+		border: 2px solid #C6D880;
+		width: 400px;
+		text-align: center;
+	}
+
+.flash.error{
+	background: #FF9999;
+		border: 2px solid #FF0000;
+		width: 400px;
+		text-align: center;
 }
 
 .field label{
