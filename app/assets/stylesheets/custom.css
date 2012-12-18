@@ -137,6 +137,13 @@ td.sidebar{
 		text-align: center;
 }
 
+.flash.notice{
+	background: #FFFF33;
+		border: 2px solid #FF9900;
+		width: 400px;
+		text-align: center;
+}
+
 .field label{
 	width: 120px;
 	margin-right: 10px;

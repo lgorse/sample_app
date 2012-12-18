@@ -88,6 +88,7 @@ describe UsersController do
 
 		before(:each) do
 			@user = FactoryGirl.create(:user)
+			controller.stub!(:signed_in?).and_return(true)
 		end
 
 		it "should be successful" do
@@ -111,6 +112,7 @@ describe UsersController do
 
 		before(:each) do
 			@user = FactoryGirl.create(:user)
+			controller.stub!(:signed_in?).and_return(true)
 		end
 
 		describe "failure" do
@@ -148,7 +150,25 @@ describe UsersController do
 				flash[:success].should =~ /updated/i
 			end
 		end
+	end
 
+	describe "authentification of edit/update actions" do
+
+		before (:each) do
+			@user = FactoryGirl.create(:user)
+		end
+
+		it "should deny access to 'edit'" do
+			get :edit, :id => @user
+			flash[:notice].should =~ /Sign in/i
+			response.should redirect_to(signin_path)
+		end
+
+		it "should deny access to 'update'" do
+			get :update, :id => @user
+			flash[:notice].should =~ /Sign in/i
+			response.should redirect_to(signin_path)
+		end
 	end
 end
 =begin
