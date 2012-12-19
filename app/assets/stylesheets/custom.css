@@ -182,3 +182,7 @@ td.sidebar{
 .action{
 	margin-left: 280px;
 }
+
+.pagination{
+	font-weight: bold;
+}

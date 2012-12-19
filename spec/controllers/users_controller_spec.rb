@@ -34,7 +34,14 @@ describe UsersController do
 
 			it "should have an element for each user" do
 				get :index
-				User.all.each {|user| response.body.should have_selector('li', :text => user.name)}
+				User.paginate(:page=>1).each {|user| response.body.should render_template('user')}
+			end
+
+			it "should paginate users" do
+				get :index
+				#response.body.should have_selector('div.container')
+				#response.body.should have_selector('span.disabled', :text =>'Previous')
+				#response.body.should have_selector('a', :href => '/users?page=2', :text => '2')
 			end
 		end
 	end
@@ -114,120 +121,118 @@ describe UsersController do
 
 			it "should sign user in" do
 				post:create, :user =>@attr
-			#@user = assigns(:user)
-			controller.should be_signed_in
-			#response.should redirect_to(user_path(@user))
-		end
-	end
-
-	describe "GET 'edit'" do
-
-		before(:each) do
-			@user = FactoryGirl.create(:user)
-			test_sign_in(@user)
+				controller.should be_signed_in
+			end
 		end
 
-		it "should be successful" do
-			get :edit, :id => @user
-			response.should be_success
-		end
-
-		it "should have the right title" do
-			get :edit, :id => @user
-			response.body.should have_selector('h1', :text => 'Edit user')
-		end
-
-		it "should have a link to change the Gravatar" do
-			get :edit, :id => @user
-			response.body.should have_link('a', :href => 'http://gravatar.com/emails',
-				:text => 'Change')
-		end
-	end
-
-	describe "PUT 'update'"  do
-
-		before(:each) do
-			@user = FactoryGirl.create(:user)
-			test_sign_in(@user)
-		end
-
-		describe "failure" do
+		describe "GET 'edit'" do
 
 			before(:each) do
-				@attr = {:name =>"", :email=>"", :password=>"", :password_confirmation =>""}
+				@user = FactoryGirl.create(:user)
+				test_sign_in(@user)
 			end
 
-			it "should render edit page" do
-				put :update, :id => @user, :user => @attr
-				response.body.should render_template('edit')
+			it "should be successful" do
+				get :edit, :id => @user
+				response.should be_success
 			end
 
 			it "should have the right title" do
-				put :update, :id => @user, :user => @attr
+				get :edit, :id => @user
 				response.body.should have_selector('h1', :text => 'Edit user')
 			end
+
+			it "should have a link to change the Gravatar" do
+				get :edit, :id => @user
+				response.body.should have_link('a', :href => 'http://gravatar.com/emails',
+					:text => 'Change')
+			end
 		end
 
-		describe "success" do
+		describe "PUT 'update'"  do
+
 			before(:each) do
-				@attr = {:name =>"New Name", :email=>"user@super.example", :password=>"barbaz", :password_confirmation =>"barbaz"}
+				@user = FactoryGirl.create(:user)
+				test_sign_in(@user)
 			end
 
-			it "should change the user's attributes" do
-				put :update, :id => @user, :user => @attr
-				user = assigns(:user)
-				@user.reload
-				user.name.should == @user.name
-				user.email.should == @user.email
+			describe "failure" do
+
+				before(:each) do
+					@attr = {:name =>"", :email=>"", :password=>"", :password_confirmation =>""}
+				end
+
+				it "should render edit page" do
+					put :update, :id => @user, :user => @attr
+					response.body.should render_template('edit')
+				end
+
+				it "should have the right title" do
+					put :update, :id => @user, :user => @attr
+					response.body.should have_selector('h1', :text => 'Edit user')
+				end
 			end
 
-			it "should have a flash message" do
-				put :update, :id => @user, :user => @attr
-				flash[:success].should =~ /updated/i
+			describe "success" do
+				before(:each) do
+					@attr = {:name =>"New Name", :email=>"user@super.example", :password=>"barbaz", :password_confirmation =>"barbaz"}
+				end
+
+				it "should change the user's attributes" do
+					put :update, :id => @user, :user => @attr
+					user = assigns(:user)
+					@user.reload
+					user.name.should == @user.name
+					user.email.should == @user.email
+				end
+
+				it "should have a flash message" do
+					put :update, :id => @user, :user => @attr
+					flash[:success].should =~ /updated/i
+				end
+			end
+		end
+
+		describe "authentification of edit/update actions" do
+
+			before (:each) do
+				@user = FactoryGirl.create(:user)
+			end
+
+			describe "for non-signed-in users" do
+
+				it "should deny access to 'edit'" do
+					get :edit, :id => @user
+					flash[:notice].should =~ /Sign in/i
+					response.should redirect_to(signin_path)
+				end
+
+				it "should deny access to 'update'" do
+					get :update, :id => @user
+					flash[:notice].should =~ /Sign in/i
+					response.should redirect_to(signin_path)
+				end
+
+			end
+
+			describe "for signed-in users" do
+
+				before(:each) do
+					wrong_user = FactoryGirl.create(:user, :email => "user@example.net")
+					test_sign_in(wrong_user)
+				end
+
+				it "should require matching users for 'edit'" do
+					get :edit, :id => @user
+					response.should redirect_to(root_path)
+				end
+
+				it "should require matching users for 'update'" do
+					put :update, :id => @user, :user => {}
+					response.should redirect_to(root_path)
+				end
 			end
 		end
 	end
-
-	describe "authentification of edit/update actions" do
-
-		before (:each) do
-			@user = FactoryGirl.create(:user)
-		end
-
-		describe "for non-signed-in users" do
-
-			it "should deny access to 'edit'" do
-				get :edit, :id => @user
-				flash[:notice].should =~ /Sign in/i
-				response.should redirect_to(signin_path)
-			end
-
-			it "should deny access to 'update'" do
-				get :update, :id => @user
-				flash[:notice].should =~ /Sign in/i
-				response.should redirect_to(signin_path)
-			end
-
-		end
-
-		describe "for signed-in users" do
-
-			before(:each) do
-				wrong_user = FactoryGirl.create(:user, :email => "user@example.net")
-				test_sign_in(wrong_user)
-			end
-
-			it "should require matching users for 'edit'" do
-				get :edit, :id => @user
-				response.should redirect_to(root_path)
-			end
-
-			it "should require matching users for 'update'" do
-				put :update, :id => @user, :user => {}
-				response.should redirect_to(root_path)
-			end
-		end
-	end
-end
 
 
