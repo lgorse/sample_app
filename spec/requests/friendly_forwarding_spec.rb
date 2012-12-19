@@ -6,7 +6,7 @@ describe "FriendlyForwardings" do
 		visit edit_user_path(user)
 		fill_in "Email", :with => user.email
 		fill_in "Password", :with => user.password
-		click_button "Update"
+		click_button "Sign in"
 		#page.should render_template('user/edit')
 		#current_path.should == edit_user_path
 		#expect(response).to render_template('users/edit')

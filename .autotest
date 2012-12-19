@@ -1,3 +1,4 @@
 Autotest.add_hook :initialize do |at|
 %w{ .git doc log tmp vendor }.each { |ex| at.add_exception( ex ) } 
 end
+

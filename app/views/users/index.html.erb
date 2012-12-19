@@ -1,0 +1,10 @@
+<h1><%= @title %></h1>
+
+<ul class = "users">
+	<% User.all.each do |user| %>
+	<li>
+		<%= gravatar_for user, :size => 30 %>
+		<%= link_to user.name, user_path(user)  %>
+	</li>
+	<% end %>
+</ul>
