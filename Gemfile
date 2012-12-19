@@ -14,6 +14,8 @@ group :development do
 	gem 'win32console'
 	gem 'autotest'
 	gem 'faker'
+	gem 'annotate'
+	gem 'factory_girl_rails'
 end
 
 group :test do

@@ -72,6 +72,11 @@ a:hover{
 	text-decoration: underline;
 }
 
+a.delete_user{
+	border-left: 1px solid;
+	padding-left:0.5em;
+}
+
 a.signup_button{
 	margin-left: auto;
 	margin-right: auto;
