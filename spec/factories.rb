@@ -1,4 +1,4 @@
-require 'factory_girl'
+#require 'factory_girl'
 
 FactoryGirl.define do
 	factory :user do |user|
@@ -8,4 +8,13 @@ FactoryGirl.define do
 		user.password_confirmation "mypassword"
 	end
 end
+
+FactoryGirl.define do
+	factory :micropost do |micropost|
+		micropost.content		"Hello, world"
+		micropost.association	:user
+	end
+end
+
+
 

@@ -15,7 +15,7 @@ group :development do
 	gem 'autotest'
 	gem 'faker'
 	gem 'annotate'
-	gem 'factory_girl_rails'
+	gem 'factory_girl_rails', :require => false
 end
 
 group :test do
