@@ -107,6 +107,8 @@ describe UsersController do
 
 		before(:each) do
 			@user = FactoryGirl.create(:user)
+			@mp1 = FactoryGirl.create(:micropost, :user => @user, :created_at => 1.day.ago)
+			@mp2 = FactoryGirl.create(:micropost, :user => @user, :content => "marty pants", :created_at => 1.hour.ago)
 		end
 
 		it "should be successful" do
@@ -117,6 +119,31 @@ describe UsersController do
 		it "should find the right user" do
 			get :show, :id =>@user
 			assigns(:user).should == @user
+		end
+
+		it "should render the correct partial" do
+			get :show, :id => @user
+			response.should render_template('micropost')
+		end
+
+		it "should show the user's microposts" do
+			get :show, :id=>@user
+			response.body.should have_selector('span.content', :text => @mp1.content)
+			response.body.should have_selector('span.content', :text => @mp2.content)
+		end
+
+		it "should paginate microposts" do
+			30.times {FactoryGirl.create(:micropost, :user => @user, :content => "foo")}
+			get :show, :id=>@user
+			response.body.should have_selector('div.pagination')
+			response.body.should have_selector('span.disabled', :text =>'Previous')
+		end
+
+		it "should provide the micropost count" do
+			30.times {FactoryGirl.create(:micropost, :user => @user, :content => "foo")}
+			get :show, :id => @user
+			response.body.should have_selector('td.sidebar', :text => @user.microposts.count.to_s)
+
 		end
 	end
 

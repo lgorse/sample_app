@@ -22,6 +22,12 @@ module SessionsHelper
 		current_user = nil
 	end
 
+begin
+	def authenticate
+		deny_access unless signed_in?
+	end
+end
+
 	private
 
 	def user_from_remember_token
