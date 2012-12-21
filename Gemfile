@@ -14,6 +14,7 @@ group :development do
 	gem 'win32console'
 	gem 'autotest'
 	gem 'faker'
+	#, :require => false
 	gem 'annotate'
 	gem 'factory_girl_rails', :require => false
 end
