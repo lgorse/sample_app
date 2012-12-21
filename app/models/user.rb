@@ -33,6 +33,11 @@ validates :password, :presence => true,
  	self.encrypted_password == encrypt(submitted_password)
  end
 
+ def feed
+ 	#Micropost.all
+ 	Micropost.where("user_id = ?", self.id)
+ end
+
  class << self
  	def authenticate(email, submitted_password)
  		user = find_by_email(email)
